@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Navbar,NavbarBrand} from 'reactstrap';
 import logo from './logo.svg';
 import Menu from './components/MenuComponent';
+import {DISHES} from './shared/dishes';
 import './App.css';
 
 class App extends Component { //or function App()
@@ -13,7 +14,7 @@ class App extends Component { //or function App()
           <NavbarBrand href='/'>Los Pollos Hermanos</NavbarBrand>
         </div>
       </Navbar>
-      <Menu />
+      <Menu dishes={DISHES} />
     </div>
   );
   }
