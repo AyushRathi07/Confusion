@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Card, CardImg, CardTitle, CardBody, CardText} from 'reactstrap';
+import {Card, CardImg, CardTitle, CardBody, CardText, Breadcrumb, BreadcrumbItem} from 'reactstrap';
+import {Link} from 'react-router-dom';
 import '../App.css';
 
     function RenderComments({comments}){
@@ -10,7 +11,7 @@ import '../App.css';
                     <li>-- {cmnt.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(cmnt.date)))}</li><br />
                 </ul>
             );
-        });
+        })
         return(
             <div className="col-12 col-md-5 m-1">
                 <h4>Comments</h4>
@@ -19,7 +20,7 @@ import '../App.css';
         );
     }
 
-    function RenderSelectedDish({dish}){
+    function RenderSelectedDish({dish, comments}){
         if(dish==null)
             return <div></div>;
         else{
@@ -34,7 +35,7 @@ import '../App.css';
                         </CardBody>
                     </Card>
                 </div>
-                    <RenderComments comments={dish.comments} />
+                    <RenderComments comments={comments} />
                 </div>
             );
         }
@@ -44,7 +45,17 @@ import '../App.css';
     const DishDetails = (props) => {    
         return (
             <div className="container">
-                <RenderSelectedDish dish={props.dish} />;
+                <div className="row">
+                    <Breadcrumb>
+                        <BreadcrumbItem><Link to='/menu'>Menu</Link></BreadcrumbItem>
+                        <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+                    </Breadcrumb>
+                    <div className="col-12">
+                        <h3>{props.dish.name}</h3>
+                    </div>
+                    <hr/>
+                </div>
+                <RenderSelectedDish dish={props.dish} comments={props.comments}/>
             </div>
         );
     }
