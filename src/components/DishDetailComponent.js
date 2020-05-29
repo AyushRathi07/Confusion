@@ -7,7 +7,7 @@ import { LocalForm, Control, Errors } from 'react-redux-form';
 const minLength = (len) => (val) => val && val.length>=len;
 const maxLength = (len) => (val) => !val || val.length<=len;
 
-function RenderComments({comments}){
+function RenderComments({comments, addComment, dishId}){
     const cmnts = comments.map((cmnt)=>{
         return (
             <ul className="list-unstyled">
@@ -20,12 +20,12 @@ function RenderComments({comments}){
         <div className="col-12 col-md-5 m-1">
             <h4>Comments</h4>
             {cmnts}
-            <CommentForm />
+            <CommentForm addComment={addComment} dishId={dishId}/>
         </div>            
     );
 }
 
-function RenderSelectedDish({ dish, comments}){
+function RenderSelectedDish({ dish, comments, addComment}){
     if(dish==null)
         return <div></div>;
     else{
@@ -40,7 +40,7 @@ function RenderSelectedDish({ dish, comments}){
                     </CardBody>
                 </Card>
             </div>
-                <RenderComments comments={comments}/>
+                <RenderComments comments={comments} addComment={addComment} dishId={dish.id}/>
             </div>
         );
     }
@@ -59,7 +59,7 @@ const DishDetails = (props) => {
                 </div>
                 <hr/>
             </div>
-            <RenderSelectedDish dish={props.dish} comments={props.comments} />
+            <RenderSelectedDish dish={props.dish} comments={props.comments} addComment={props.addComment}/>
             
         </div>
     );
@@ -83,8 +83,7 @@ class CommentForm extends Component{
 
     handleSubmit(values){
         this.toggleModal();
-        alert("Current state is "+JSON.stringify(values));
-        console.log("Current state is "+JSON.stringify(values));
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render(){
